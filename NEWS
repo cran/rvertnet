@@ -1,3 +1,23 @@
+rvertnet 0.2.2
+===============
+
+Package completely reworked for the new VertNet API.
+
+NEW FEATURES
+
+* The functions `vertavailablemaps()`, `vertlocations()`, 
+`vertoccurrence()`, `vertoccurrencecount()`, `vertproviders()`, 
+`verttaxa()` are now defunct. You can call these functions, but 
+they print an error message, saying they are defunct.
+* Gained new functions `bigsearch()`, `searchbyterm()`, 
+`spatialsearch()`, and `vertsummary()`.
+* Gained new author: Chris Ray
+
+MINOR IMPROVEMENTS
+
+* `RJSONIO` replaced with `jsonlite`
+* Changed from CC0 to MIT license
+
 rvertnet 0.0-5
 ------------
 
