@@ -1,11 +1,10 @@
 Package: rvertnet
-Title: Search VertNet, a Database of Vertebrate Specimen Records
-Description: Retrieve, map and summarize data from the VertNet.org archives. 
-    Functions allow searching by many parameters, including taxonomic names, 
-    places, dates. In addition, there is an interface for conducting spatially 
-    delimited searches, and another for requesting large datasets via email.
-Version: 0.2.2
-Date: 2015-01-21
+Title: Search 'Vertnet', a 'Database' of Vertebrate Specimen Records
+Description: Retrieve, map and summarize data from the 'VertNet.org' archives.
+    Functions allow searching by many parameters, including 'taxonomic' names,
+    places, and dates. In addition, there is an interface for conducting spatially
+    delimited searches, and another for requesting large 'datasets' via email.
+Version: 0.3.0
 Author: Scott Chamberlain [aut, cre], Chris Ray [aut], Vijay Barve [aut]
 Maintainer: Scott Chamberlain <myrmecocystus@gmail.com>
 License: MIT + file LICENSE
@@ -13,9 +12,9 @@ LazyData: true
 URL: https://github.com/ropensci/rvertnet
 BugReports: https://github.com/ropensci/rvertnet/issues
 VignetteBuilder: knitr
-Imports: plyr, jsonlite, httr, data.table, ggplot2, maps
+Imports: plyr, jsonlite, httr, dplyr, ggplot2, maps
 Suggests: roxygen2, testthat, knitr
-Packaged: 2015-01-21 21:25:23 UTC; sacmac
 NeedsCompilation: no
+Packaged: 2015-06-26 01:20:02 UTC; sacmac
 Repository: CRAN
-Date/Publication: 2015-01-22 00:50:02
+Date/Publication: 2015-06-26 10:55:20

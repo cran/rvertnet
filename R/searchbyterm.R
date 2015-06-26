@@ -4,7 +4,8 @@
 #' association with the specified search terms.
 #' 
 #' @export
-#' @import plyr jsonlite httr data.table
+#' @import plyr jsonlite httr 
+#' @importFrom dplyr rbind_all tbl_df
 #' 
 #' @param specificepithet Taxonomic specific epithet, e.g. (sapiens in Homo sapiens) (character)
 #' @param genus Taxonomic genus (character)
@@ -16,7 +17,8 @@
 #' text file via email.
 #' @param compact Return a compact data frame (logical)
 #' @param year Year (numeric) or range of years designated by comparison
-#'  operators "<", ">", "<=" or ">=" (character)
+#'  operators "<", ">", "<=" or ">=". You can pass in more than one of these
+#'  queries, in a vector. See example below. (character)
 #' @param date Event date associated with this occurrence record; yyyy-mm-dd
 #'  or the range yyyy-mm-dd/yyyy-mm-dd (character)
 #' @param mappable Record includes valid coordinates in decimal latitude and
@@ -54,29 +56,38 @@
 #'    dwc terms used in the search.
 #'    
 #' @examples \dontrun{
-#' # Find multiple species
-#' out <- searchbyterm(gen = "ochotona", specificepithet = "(princeps OR collaris)")
-#'
 #' # Limit the number of records returned to <1000; use bigsearch() for >1000 records
-#' out <- searchbyterm(cl = "aves", st = "california", lim = 10)
+#' (out <- searchbyterm(class = "aves", st = "california", lim = 10))
+#' 
+#' # Find multiple species
+#' (out <- searchbyterm(gen = "ochotona", specificepithet = "(princeps OR collaris)", limit=10))
 #'
 #' # Specifying a single year (no quotes) or range of years (use quotes)
-#' out <- searchbyterm(cl = "aves", st = "california", y = 1976)
-#' out <- searchbyterm(cl = "aves", st = "california", y = ">=1976")
+#' (out <- searchbyterm(class = "aves", st = "california", y = 1976, limit=10))
+#' (out <- searchbyterm(class = "aves", st = "california", y = ">=1976", limit=10))
 #'
 #' # Specifying a range (in meters) for uncertainty in spatial location (use quotes)
-#' out <- searchbyterm(cl = "aves", st = "nevada", err = "<25")
-#' out <- searchbyterm(cl = "aves", st = "california", y = 1976, err = "<=1000")
+#' out <- searchbyterm(class = "aves", st = "nevada", error = "<25")
+#' out <- searchbyterm(class = "aves", st = "california", y = 1976, error = "<=1000")
 #'
 #' # Specifying records by event date (use quotes)
-#' out <- searchbyterm(cl = "aves", st = "california", date = "2009-03-25")
+#' out <- searchbyterm(class = "aves", st = "california", date = "2009-03-25")
 #' # ...but specifying a date range may not work
 #' out <- searchbyterm(specificepithet = "nigripes", date = "1935-09-01/1935-09-30")
 #' 
 #' # Pass in curl options for curl debugging
 #' library("httr")
 #' out <- searchbyterm(class = "aves", limit = 10, config=verbose())
-#' out <- searchbyterm(class = "aves", limit = 500, config=timeout(1))
+#' # out <- searchbyterm(class = "aves", limit = 500, config=timeout(1))
+#' 
+#' # Request more than 1000 records
+#' out <- searchbyterm(genus = "Ochotona", limit = 1500)
+#' out$meta
+#' out$data
+#' NROW(out$data)
+#' 
+#' # Use more than one year query
+#' searchbyterm(class = "aves", year = c(">=1976", "<=1986"))
 #' }
 
 searchbyterm <- function(specificepithet = NULL, genus = NULL, family = NULL, order = NULL,
@@ -85,22 +96,24 @@ searchbyterm <- function(specificepithet = NULL, genus = NULL, family = NULL, or
                   stateprovince = NULL, county = NULL, island = NULL, igroup = NULL,
                   inst = NULL, id = NULL, catalognumber = NULL, collector = NULL, type = NULL,
                   hastypestatus = NULL, media = NULL, rank = NULL, tissue = NULL, 
-                  resource = NULL, verbose = TRUE, ...){
+                  resource = NULL, verbose = TRUE, ...) {
+  
   args <- compact(list(specificepithet = specificepithet, genus = genus, family = family,
-                       order = order, class = class, year = year, eventdate = date,
+                       order = order, class = class, eventdate = date,
                        mappable = ab(mappable), coordinateuncertaintyinmeters = error,
                        continent = continent, country = cntry, stateprovince = stateprovince,
                        county = county, island = island, islandgroup = igroup,
                        institutioncode = inst, occurrenceid = id, catalognumber = catalognumber,
                        recordedby = collector, type = type, hastypestatus = hastypestatus,
                        media = ab(media), rank = rank, tissue = ab(tissue), resource = resource))
+  args <- compact(c(args, combyr(year)))
   vertwrapper(fxn = "searchbyterm", args = args, lim = limit, compact = compact, verbose = verbose, ...)
 }
 
 ab <- function(x){
-  if(is.null(x)){
+  if (is.null(x)) {
     NULL
   } else {
-    if(x) 1 else 0
+    if (x) 1 else 0
   }
 }
