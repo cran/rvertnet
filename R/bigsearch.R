@@ -31,7 +31,7 @@
 #' 
 #' # Use more than one year query
 #' bigsearch(class = "aves", year = c(">=1976", "<=1986"), 
-#'           rfile = "test-bigsearch1", email = "myrmecocystus@@gmail.com")
+#'           rfile = "test-bigsearch1", email = "big@@search.luv")
 #' }
 
 bigsearch <- function(specificepithet = NULL, genus = NULL, family = NULL, order = NULL,
@@ -42,7 +42,7 @@ bigsearch <- function(specificepithet = NULL, genus = NULL, family = NULL, order
       type = NULL, hastypestatus = NULL, media = NULL, rank = NULL, 
       tissue = NULL, resource = NULL, rfile, email, verbose = TRUE, ...){
 
-  args <- compact(list(specificepithet = specificepithet, genus = genus, family = family,
+  args <- rvc(list(specificepithet = specificepithet, genus = genus, family = family,
       order = order, class = class, eventdate = date,
       mappable = ab(mappable), coordinateuncertaintyinmeters = error,
       continent = continent, country = cntry, stateprovince = stateprovince,
@@ -50,7 +50,7 @@ bigsearch <- function(specificepithet = NULL, genus = NULL, family = NULL, order
       institutioncode = inst, occurrenceid = id, catalognumber = catalognumber,
       recordedby = collector, type = type, hastypestatus = hastypestatus,
       media = ab(media), rank = rank, tissue = ab(tissue), resource = resource))
-  args <- compact(c(args, combyr(year)))
+  args <- rvc(c(args, combyr(year)))
   if (length(args) == 0) {
     stop("You must use at least one parameter to specify your query", call. = FALSE)
   }

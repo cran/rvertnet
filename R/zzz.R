@@ -33,7 +33,7 @@ mssg <- function(v, ...) if (v) message(...)
 
 get_terms <- function(){
   url <- "https://raw.githubusercontent.com/tdwg/dwc/master/downloads/SimpleDwCTermsList.txt"
-  termlist <- read.table(text = content(GET(url), as = "text", encoding = "UTF-8"), stringsAsFactors = FALSE)
+  termlist <- utils::read.table(text = content(GET(url), as = "text", encoding = "UTF-8"), stringsAsFactors = FALSE)
   # Strip embedded header from termlist and deal with upper vs. lower case in termlist vs. out$recs
   if (grep("term", tolower(termlist[1,1]))) termlist <- as.data.frame(termlist[-1,1], stringsAsFactors = FALSE)
   fullr <- as.data.frame(matrix(NA, 1, length(termlist[,1]))) # Create a full data frame to populate
@@ -58,7 +58,7 @@ vert_GET <- function(fxn="searchbyterm", args, limit = 1000, verbose = TRUE, ...
     allres <- sum(vapply(result, NROW, 1))
     if (char2num(avail) <= allres) allres <- limit
   }
-  df <- if (sum(sapply(result, NROW)) == 0) data.frame(NULL, stringsAsFactors = FALSE) else rbind_all(result)
+  df <- if (sum(sapply(result, NROW)) == 0) data.frame(NULL, stringsAsFactors = FALSE) else bind_rows(result)
   names(df) <- tolower(names(df))
   res <- get_terms()
   df <- merge(res$fullr, df, all = TRUE)[, tolower(res$termlist[,1]) ]
@@ -69,17 +69,42 @@ vert_GET <- function(fxn="searchbyterm", args, limit = 1000, verbose = TRUE, ...
 }
 
 make_q <- function(fxn, x, cursor = NULL, limit=1000){
+  qry <- ""
   if (fxn == "vertsearch") x <- paste0(unname(unlist(x)), collapse = " ")
   if (fxn == "spatialsearch") x <- sprintf("distance(location,geopoint(%s,%s))<%s", x$lat, x$long, x$radius)
+  # if query param present, remove named param
+  if ("query" %in% names(x)) {
+    qry <- x$query
+    x <- pop(x, "query")
+  }
   if (!is.null(limit)) {
     if (!is.null(cursor)) {
-      ff <- sprintf('{"q":"%s","l":%s,"c":"%s"}', noc(gsub('\"|\\{|\\}', "", jsonlite::toJSON(x, auto_unbox = TRUE)), fxn), limit, cursor)
+      ff <- sprintf(
+        '{"q":"%s","l":%s,"c":"%s"}', 
+        noc(gsub('\"|\\{|\\}', "", jsonlite::toJSON(x, auto_unbox = TRUE)), fxn), 
+        limit, 
+        cursor
+      )
     } else {
-      ff <- sprintf('{"q":"%s","l":%s}', noc(gsub('\"|\\{|\\}', "", jsonlite::toJSON(x, auto_unbox = TRUE)), fxn), limit)
+      ff <- sprintf(
+        '{"q":"%s","l":%s}', 
+        paste(
+          qry,
+          noc(gsub('\"|\\{|\\}', "", jsonlite::toJSON(x, auto_unbox = TRUE)), fxn)
+        ),
+        limit
+      )
     }
   } else {
-    ff <- sprintf('{"q":"%s"}', noc(gsub('\"|\\{|\\}', "", jsonlite::toJSON(x, auto_unbox = TRUE)), fxn))
+    ff <- sprintf(
+      '{"q":"%s"}',
+      paste(
+        qry,
+        noc(gsub('\"|\\{|\\}', "", jsonlite::toJSON(x, auto_unbox = TRUE)), fxn)
+      )
+    )
   }
+  
   tmp <- gsub(":>", ">", gsub(":<", "<", gsub(":=", "=", ff)))
   gsub("year\\.[0-9]", "year", tmp)
 }
@@ -89,7 +114,8 @@ vdurl <- function() "http://api.vertnet-portal.appspot.com/api/download"
 
 make_meta <- function(x){
   tmp <- x[ !names(x) %in% "recs" ]
-  plyr::rename(tmp, c(cursor = "last_cursor"))
+  names(tmp)[which(names(tmp) == "cursor")] <- "last_cursor"
+  tmp
 }
 
 getlim <- function(x, y){
@@ -118,7 +144,7 @@ make_bigq <- function(x, email, rfile){
 
 combyr <- function(x) {
   if (!is.null(x) && length(x) > 1) {
-    setNames(as.list(x), rep("year", length(x)))
+    stats::setNames(as.list(x), rep("year", length(x)))
   } else {
     list(year = x)
   } 
@@ -132,3 +158,8 @@ checkfourpkg <- function(x) {
   }
 }
   
+pop <- function(x, nms) {
+  x[!names(x) %in% nms]
+}
+
+rvc <- function(x) Filter(Negate(is.null), x)
