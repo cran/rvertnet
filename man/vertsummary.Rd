@@ -19,15 +19,17 @@ A list of summary statistics
 Creates a simple summary of data returned by a VertNet search.
 }
 \details{
-\code{\link{vertsummary}} provides information on the sources, types and extent
-   of data returned by a VertNet search.
+\code{\link{vertsummary}} provides information on the sources, 
+types and extent of data returned by a VertNet search.
 }
 \examples{
 \dontrun{
-recs <- vertsearch("Junco hyemalis")  # get occurrence records
-vertsummary(recs)            # summarize occurrence records
+# get occurrence records
+recs <- vertsearch("Junco hyemalis", limit = 10)
+
+# summarize occurrence records
+vertsummary(recs)
 
 vertsummary(vertsearch("Oncorhynchus clarki henshawi"))
 }
 }
-

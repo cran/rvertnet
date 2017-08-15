@@ -3,14 +3,15 @@ context("spatialsearch")
 test_that("spatialsearch works correctly", {
   skip_on_cran()
   
-  a <- spatialsearch(lat = 33.529, lon = -105.694, radius = 2000, limit = 10, verbose = FALSE)
+  a <- spatialsearch(lat = 33.529, lon = -105.694, radius = 2000, 
+                     limit = 10, messages = FALSE)
   
   expect_is(a, "list")
   expect_is(a$meta, "list")
   expect_is(a$data, "data.frame")
   
   expect_is(a$data$references, "character")
-  expect_is(na.omit(unique(a$data$infraspecificepithet)), "character")
+  expect_is(na.omit(unique(a$data$specificepithet)), "character")
   
   expect_equal(NROW(a$data), 10)
   
@@ -22,11 +23,12 @@ test_that("spatialsearch fails correctly", {
   skip_on_cran()
   
   # server error when not passing any vars
-  expect_error(spatialsearch(verbose = FALSE), 'argument "lat" is missing')
+  expect_error(spatialsearch(messages = FALSE), 'argument "lat" is missing')
   # server error when pass bad var types
   expect_message(spatialsearch(lat = "asdfadsf", long = -80, radius = 1))
   # server error when pass bad var types
   expect_message(spatialsearch(lat = 50, long = "asdfadsf", radius = 1))
   # message given when verobse is TRUE
-  expect_message(spatialsearch(lat = 33.529, long = -105.694, radius = 2000, limit = 1, verbose = TRUE))
+  expect_message(spatialsearch(lat = 33.529, long = -105.694, 
+                               radius = 2000, limit = 1, messages = TRUE))
 })

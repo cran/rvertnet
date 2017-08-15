@@ -1,3 +1,32 @@
+rvertnet 0.6.0
+===============
+
+Added Code of Conduct.
+
+### NEW FEATURES
+
+* Now using `crul` package for HTTP requests instead of `httr` (#57)
+* Note that `verbose` parameter has been replaced with `messages` throughout
+the package.
+* Now with function for search for trait data: `traitsearch()` (#55)
+
+### DEFUNCT AND DEPRECATED
+
+* All `dump` functions are now defunct. Those functions tried to help users
+work with bulk Vertnet data - the setup has gotten too complex (#56)
+
+### MINOR IMPROVEMENTS
+
+* Improvements to documentation for `traitsearch()` function on what 
+fields have given data (#58) thanks @gaurav
+* `vertsearch()` and `searchbyterm()` gain new parameter `only_dwc`, which 
+allows to optionally only return Darwin Core fields
+
+### BUG FIXES 
+
+* Small fix to `vertsummary()` (59)
+
+
 rvertnet 0.5.0
 ===============
 
