@@ -34,14 +34,10 @@ vertwrapper <- function(fxn = "", args = NULL, lim = NULL, rfile = NULL,
 
 mssg <- function(v, ...) if (v) message(...)
 
-get_terms <- function(){
-  url <- "https://raw.githubusercontent.com/tdwg/dwc/master/downloads/SimpleDwCTermsList.txt"
-  termlist <- utils::read.table(text = crul::HttpClient$new(url)$get()$parse("UTF-8"), stringsAsFactors = FALSE)
-  # Strip embedded header from termlist and deal with upper vs. lower case in termlist vs. out$recs
-  if (grep("term", tolower(termlist[1,1]))) termlist <- as.data.frame(termlist[-1,1], stringsAsFactors = FALSE)
-  fullr <- as.data.frame(matrix(NA, 1, length(termlist[,1]))) # Create a full data frame to populate
-  colnames(fullr) <- tolower(termlist[,1]) # Sync case to facilitate merge
-  list(termlist = termlist, fullr = fullr)
+get_terms <- function() {
+  readLines(
+    system.file("extdata", "simple_dwc_terms.txt", package = "rvertnet")
+  )
 }
 
 vert_GET <- function(fxn="searchbyterm", args, limit = 1000, messages = TRUE, 
@@ -71,8 +67,7 @@ vert_GET <- function(fxn="searchbyterm", args, limit = 1000, messages = TRUE,
   names(df) <- tolower(names(df))
   if (only_dwc) {
     res <- get_terms()
-    df <- merge(res$fullr, df, all = TRUE)[, tolower(res$termlist[,1]) ]
-    df <- df[ -NROW(df), ]
+    df <- df[ , names(df) %in% res ]
   }
   mssg(messages, paste("\nLast Query URL: \"", tt$url, "\"", sep = ""))
   mssg(messages, paste("\nMatching records:", NROW(df), "returned,", avail, "available", sep = " "))
