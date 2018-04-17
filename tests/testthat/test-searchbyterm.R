@@ -5,11 +5,10 @@ test_that("searchbyterm works correctly", {
   
   # Find multiple species
   a <- searchbyterm(genus = "ochotona", specificepithet = "(princeps OR collaris)", limit = 5, messages = FALSE)
+  Sys.sleep(3)
   b <- searchbyterm(class = "aves", state = "california", limit = 10, messages = FALSE)
   ##cc <- searchbyterm(class = "aves", state = "california", year = 1976, limit = 10, messages = FALSE)
-  Sys.sleep(3)
   
-  expect_equal( NROW( searchbyterm(limit = 1, messages = FALSE)$data ), 1)
   expect_is(a, "list")
   expect_is(a$meta, "list")
   expect_is(a$data, "data.frame")

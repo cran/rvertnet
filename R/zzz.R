@@ -1,30 +1,29 @@
 # Wrapper for search functions vertsearch, searchbyterm, spatialsearch and bigsearch
 
-vertwrapper <- function(fxn = "", args = NULL, lim = NULL, rfile = NULL, 
-                        email = NULL, compact = TRUE, messages = TRUE, 
+vertwrapper <- function(fxn = "", args = NULL, lim = NULL, rfile = NULL,
+                        email = NULL, compact = TRUE, messages = TRUE,
                         only_dwc = TRUE, callopts = list(), ...) {
   mssg(messages, "Processing request...")
   if (fxn == "bigsearch") {
-    #tt <- GET(vdurl(), query = list(q = make_bigq(args, email, rfile)), ...)
     cli <- crul::HttpClient$new(url = vdurl(), opts = callopts)
     tt <- cli$get('api/download', query = list(q = make_bigq(args, email, rfile)), ...)
     tt$raise_for_status()
     mssg(messages, "\nThank you! Download instructions will be sent by email.")
   } else {
     ress <- vert_GET(fxn, args, lim, messages, only_dwc, callopts, ...)
-    
+
     # Remove columns populated fully by NAs
-    if (compact) { 
+    if (compact) {
       r <- ress$data
       ress$data <- r[,!sapply(r, function(x) all(is.na(x)))]
     }
-    
+
     # Return results
     if (NROW(ress$data) == 0) {
       NULL
       mssg(messages, "No records match this search request")
-      if (fxn == "spatialsearch") { 
-        mssg(messages, "Check signs on decimal longitude and latitude") 
+      if (fxn == "spatialsearch") {
+        mssg(messages, "Check signs on decimal longitude and latitude")
       }
     } else {
       ress
@@ -40,7 +39,7 @@ get_terms <- function() {
   )
 }
 
-vert_GET <- function(fxn="searchbyterm", args, limit = 1000, messages = TRUE, 
+vert_GET <- function(fxn="searchbyterm", args, limit = 1000, messages = TRUE,
                      only_dwc = TRUE, callopts = list(), ...) {
   cursor <- NULL
   allres <- 0
@@ -50,12 +49,13 @@ vert_GET <- function(fxn="searchbyterm", args, limit = 1000, messages = TRUE,
   while (allres < limit) {
     # increment iterator
     i <- i + 1
-  
-    # http  
-    tt <- cli$get('api/search', query = list(q = make_q(fxn, args, cursor, getlim(limit, allres))), ...)
+
+    # http
+    tt <- cli$get('api/search', 
+      query = list(q = make_q(fxn, args, cursor, getlim(limit, allres))), ...)
     tt$raise_for_status()
     txt <- tt$parse("UTF-8")
-    
+
     out <- jsonlite::fromJSON(txt)
     avail <- out$matching_records
     cursor <- out$cursor
@@ -63,7 +63,11 @@ vert_GET <- function(fxn="searchbyterm", args, limit = 1000, messages = TRUE,
     allres <- sum(vapply(result, NROW, 1))
     if (char2num(avail) <= allres) allres <- limit
   }
-  df <- if (sum(sapply(result, NROW)) == 0) data.frame(NULL, stringsAsFactors = FALSE) else bind_rows(result)
+  df <- if (sum(sapply(result, NROW)) == 0) {
+    data.frame(NULL, stringsAsFactors = FALSE)
+  } else {
+    bind_rows(result)
+  }
   names(df) <- tolower(names(df))
   if (only_dwc) {
     res <- get_terms()
@@ -86,14 +90,14 @@ make_q <- function(fxn, x, cursor = NULL, limit=1000){
   if (!is.null(limit)) {
     if (!is.null(cursor)) {
       ff <- sprintf(
-        '{"q":"%s","l":%s,"c":"%s"}', 
-        strtrim(noc(gsub('\"|\\{|\\}', "", jsonlite::toJSON(x, auto_unbox = TRUE)), fxn)), 
-        limit, 
+        '{"q":"%s","l":%s,"c":"%s"}',
+        strtrim(noc(gsub('\"|\\{|\\}', "", jsonlite::toJSON(x, auto_unbox = TRUE)), fxn)),
+        limit,
         cursor
       )
     } else {
       ff <- sprintf(
-        '{"q":"%s","l":%s}', 
+        '{"q":"%s","l":%s}',
         strtrim(paste(
           qry,
           noc(gsub('\"|\\{|\\}', "", jsonlite::toJSON(x, auto_unbox = TRUE)), fxn)
@@ -110,9 +114,11 @@ make_q <- function(fxn, x, cursor = NULL, limit=1000){
       ))
     )
   }
-  
+
   tmp <- gsub(":>", ">", gsub(":<", "<", gsub(":=", "=", ff)))
-  gsub("year\\.[0-9]", "year", tmp)
+  tmp <- gsub("year\\.[0-9]", "year", tmp)
+  tmp <- gsub("month\\.[0-9]", "month", tmp)
+  gsub("day\\.[0-9]", "day", tmp)
 }
 
 vurl <- function() "http://api.vertnet-portal.appspot.com"
@@ -143,19 +149,23 @@ noc <- function(x, fxn){
 }
 
 make_bigq <- function(x, email, rfile){
-  ff <- sprintf('{"q":"%s","n":"%s","e":"%s"}', noc(gsub('\"|\\{|\\}', "", jsonlite::toJSON(x, auto_unbox = TRUE)), ""), rfile, email)
+  ff <- sprintf('{"q":"%s","n":"%s","e":"%s"}', 
+    noc(gsub('\"|\\{|\\}', "", jsonlite::toJSON(x, auto_unbox = TRUE)), ""), 
+    rfile, email)
   tmp <- gsub(":>", ">", gsub(":<", "<", gsub(":=", "=", ff)))
-  gsub("year\\.[0-9]", "year", tmp)
+  tmp <- gsub("year\\.[0-9]", "year", tmp)
+  tmp <- gsub("month\\.[0-9]", "month", tmp)
+  gsub("day\\.[0-9]", "day", tmp)
 }
 
-combyr <- function(x) {
+comb_var <- function(x, var) {
   if (!is.null(x) && length(x) > 1) {
-    stats::setNames(as.list(x), rep("year", length(x)))
+    stats::setNames(as.list(x), rep(var, length(x)))
   } else {
-    list(year = x)
-  } 
+    stats::setNames(list(x), var)
+  }
 }
-  
+
 pop <- function(x, nms) {
   x[!names(x) %in% nms]
 }
@@ -165,7 +175,7 @@ rvc <- function(x) Filter(Negate(is.null), x)
 assert <- function(x, y) {
   if (!is.null(x)) {
     if (!class(x) %in% y) {
-      stop(deparse(substitute(x)), " must be of class ", 
+      stop(deparse(substitute(x)), " must be of class ",
            paste0(y, collapse = ", "), call. = FALSE)
     }
   }
