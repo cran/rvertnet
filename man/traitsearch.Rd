@@ -4,10 +4,21 @@
 \alias{traitsearch}
 \title{Trait focused search}
 \usage{
-traitsearch(taxon = NULL, has_mass = FALSE, has_length = FALSE,
-  has_sex = FALSE, has_lifestage = FALSE, length_type = NULL,
-  length = NULL, mass = NULL, limit = 1000, compact = TRUE,
-  messages = TRUE, callopts = list(), ...)
+traitsearch(
+  taxon = NULL,
+  has_mass = FALSE,
+  has_length = FALSE,
+  has_sex = FALSE,
+  has_lifestage = FALSE,
+  length_type = NULL,
+  length = NULL,
+  mass = NULL,
+  limit = 1000,
+  compact = TRUE,
+  messages = TRUE,
+  callopts = list(),
+  ...
+)
 }
 \arguments{
 \item{taxon}{(character) Taxonomic identifier or other text to search for}
@@ -34,16 +45,16 @@ Default: \code{NULL}}
 
 \item{mass}{(list) list of query terms for mass, e.g., "< 100"}
 
-\item{limit}{(numeric) Limit on the number of records returned. If >1000 
-results, we use a cursor internally, but you should still get up to the 
-results you asked for. See also 
+\item{limit}{(numeric) Limit on the number of records returned. If >1000
+results, we use a cursor internally, but you should still get up to the
+results you asked for. See also
 \code{\link{bigsearch}} to get larger result sets in a text file via email.}
 
 \item{compact}{Return a compact data frame (boolean)}
 
 \item{messages}{Print progress and information messages. Default: TRUE}
 
-\item{callopts}{curl options in a list passed on to 
+\item{callopts}{curl options in a list passed on to
 \code{\link[crul]{HttpClient}}, see examples}
 
 \item{...}{(character) Additional search terms. These must be unnamed}

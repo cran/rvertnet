@@ -4,17 +4,24 @@
 \alias{vertsearch}
 \title{Find records using a global full-text search of VertNet archives.}
 \usage{
-vertsearch(taxon = NULL, ..., limit = 1000, compact = TRUE,
-  messages = TRUE, only_dwc = TRUE, callopts = list())
+vertsearch(
+  taxon = NULL,
+  ...,
+  limit = 1000,
+  compact = TRUE,
+  messages = TRUE,
+  only_dwc = TRUE,
+  callopts = list()
+)
 }
 \arguments{
 \item{taxon}{(character) Taxonomic identifier or other text to search for}
 
 \item{...}{(character) Additional search terms. These must be unnamed}
 
-\item{limit}{(numeric) Limit on the number of records returned. If >1000 
-results, we use a cursor internally, but you should still get up to the 
-results you asked for. See also 
+\item{limit}{(numeric) Limit on the number of records returned. If >1000
+results, we use a cursor internally, but you should still get up to the
+results you asked for. See also
 \code{\link{bigsearch}} to get larger result sets in a text file via email.}
 
 \item{compact}{Return a compact data frame (boolean)}
@@ -24,7 +31,7 @@ results you asked for. See also
 \item{only_dwc}{(logical) whether or not to return only Darwin Core term
 fields. Default: \code{TRUE}}
 
-\item{callopts}{curl options in a list passed on to 
+\item{callopts}{curl options in a list passed on to
 \code{\link[crul]{HttpClient}}, see examples}
 }
 \value{
@@ -34,8 +41,8 @@ A data frame of search results
 Returns any record containing your target text in any field of the record.
 }
 \details{
-\code{\link{vertsearch}} performs a nonspecific search for your 
-input within every record and field of the VertNet archives. For a more 
+\code{\link{vertsearch}} performs a nonspecific search for your
+input within every record and field of the VertNet archives. For a more
 specific search, try \code{\link{searchbyterm}}
 }
 \examples{

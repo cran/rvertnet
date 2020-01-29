@@ -4,39 +4,51 @@
 \alias{spatialsearch}
 \title{Find records within some distance of a point given latitude and longitude.}
 \usage{
-spatialsearch(lat, long, radius, limit = 1000, compact = TRUE,
-  messages = TRUE, ...)
+spatialsearch(
+  lat,
+  long,
+  radius,
+  limit = 1000,
+  compact = TRUE,
+  messages = TRUE,
+  ...
+)
 }
 \arguments{
-\item{lat}{Latitude of the central point, in decimal degrees (numeric)
+\item{lat}{(numeric) Latitude of the central point, in decimal degrees
 required.}
 
-\item{long}{Longitude of the central point, in decimal degrees (numeric)
+\item{long}{(numeric) Longitude of the central point, in decimal degrees
 required.}
 
-\item{radius}{Radius to search, in meters (numeric). There is no default
+\item{radius}{(numeric) Radius to search, in meters. There is no default
 value for this parameter. required.}
 
-\item{limit}{(numeric) Limit on the number of records returned. If >1000
+\item{limit}{(integer) Limit on the number of records returned. If >1000
 results, we use a cursor internally, but you should still get up to the
-results you asked for. See also
-\code{\link{bigsearch}} to get larger result sets in a text file via email.}
+results you asked for. See also \code{\link[=bigsearch]{bigsearch()}} to get larger result
+sets in a text file via email.}
 
-\item{compact}{Return a compact data frame (logical)}
+\item{compact}{(logical) Return a compact data frame. default: \code{TRUE}}
 
-\item{messages}{Print progress and information messages. Default: TRUE}
+\item{messages}{(logical) Print progress and information messages.
+Default: \code{TRUE}}
 
-\item{...}{Curl arguments passed on to \code{\link[crul]{HttpClient}}}
+\item{...}{Curl arguments passed on to \link[crul:HttpClient]{crul::HttpClient}}
 }
 \value{
-A data frame of search results
+A list with two slots:
+\itemize{
+\item meta: a named list of metadata for the search results
+\item data: a data frame of search results, columns vary
+}
 }
 \description{
 Searches by decimal latitude and longitude to return any occurrence record
 within the input distance (radius) of the input point.
 }
 \details{
-\code{\link{spatialsearch}} finds all records of any taxa having
+\code{\link[=spatialsearch]{spatialsearch()}} finds all records of any taxa having
 decimal lat/long coordinates within a given radius (in meters) of
 your coordinates.
 }
@@ -51,5 +63,5 @@ out <- spatialsearch(lat = 33.529, long = -105.694, radius = 2000,
 }
 }
 \references{
-\url{https://github.com/VertNet/webapp/wiki/The-API-search-function}
+https://github.com/VertNet/webapp/wiki/The-API-search-function
 }
