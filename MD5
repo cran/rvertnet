@@ -1,7 +1,7 @@
-ae02c53e9cd443f61e6f6415fb6fd14b *DESCRIPTION
+67c78889aa51b37b14e942a3620321cb *DESCRIPTION
 98eb3758a13a347d645a317313be84b0 *LICENSE
 19752b059f64e90125d68b6398a284ab *NAMESPACE
-4a3934de453abcf2e3c9390d3fc6fe0c *NEWS.md
+a23708ee257cd8a7e81733a9c4aaf307 *NEWS.md
 74604e707773f4347f1f77d32eb66478 *R/bigsearch.R
 137e00ae50302c154f849999b484ce0e *R/data.R
 4f25e12ee115c1abfa38799977607275 *R/defunct.R
@@ -20,8 +20,8 @@ abc66cb517e0e6ce361306c3363a0323 *R/vertsearch.R
 22ba8d60e1f684903f5f66a643d27e25 *README.md
 568b41b22593b20e62a6c5c1758c337a *build/vignette.rds
 3c36b5061a69aae8ef5fbe5ffc200bd8 *data/simple_dwc_terms.rda
-a453020c6b6effc86b067d78746cca70 *inst/doc/rvertnet.Rmd
-6ffc8d5f0c999f7944f96fce347d3114 *inst/doc/rvertnet.html
+b29ede37ff097fba73301ebc54fb84cc *inst/doc/rvertnet.Rmd
+fa92f9b8023733f3c0f12ff2ef30b13a *inst/doc/rvertnet.html
 5c9794c891a5c70ac0bad5ee31ee9d95 *man/bigsearch.Rd
 7b04b7485f870b45473607632e6da14d *man/dump-defunct.Rd
 03c05f27f5120f5ea2b656ab3b555f81 *man/rvertnet-defunct.Rd
@@ -64,5 +64,5 @@ d37af2f5f464e2685a3e5285852956f3 *tests/testthat/test-traitsearch.R
 df3a30955dcc6f6910f90c9c5a42de01 *tests/testthat/test-vertmap.R
 e178cdfa1bddf2a8849e43f81fc8c10c *tests/testthat/test-vertsummary.R
 bcb6d4bbef0061fb0b79e286ae4ace11 *vignettes/precompile.R
-a453020c6b6effc86b067d78746cca70 *vignettes/rvertnet.Rmd
-854ff6fff45a06c9a84d8cbfac7a042b *vignettes/rvertnet.Rmd.orig
+b29ede37ff097fba73301ebc54fb84cc *vignettes/rvertnet.Rmd
+a7f7c422a3b6ed69c8d7b055a30a81cf *vignettes/rvertnet.Rmd.orig

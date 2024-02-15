@@ -5,7 +5,7 @@ Description: Retrieve, map and summarize data from the 'VertNet.org'
     parameters, including 'taxonomic' names, places, and dates. In addition, 
     there is an interface for conducting spatially delimited searches, and 
     another for requesting large 'datasets' via email.
-Version: 0.8.3
+Version: 0.8.4
 Authors@R: c(
     person("Scott", "Chamberlain", email = "myrmecocystus@gmail.com",
       role = c("aut", "cph"), comment = "0000-0003-1444-9135"),
@@ -31,11 +31,11 @@ X-schema.org-isPartOf: "https://ropensci.org"
 VignetteBuilder: knitr
 LazyData: true
 NeedsCompilation: no
-Packaged: 2024-02-13 07:19:40 UTC; dave
+Packaged: 2024-02-15 17:15:18 UTC; dave
 Author: Scott Chamberlain [aut, cph] (0000-0003-1444-9135),
   Chris Ray [ctb],
   Vijay Barve [ctb],
   Dave Slager [aut, cre, cph] (0000-0003-2525-2039)
 Maintainer: Dave Slager <slager@uw.edu>
 Repository: CRAN
-Date/Publication: 2024-02-14 00:20:06 UTC
+Date/Publication: 2024-02-15 23:10:02 UTC

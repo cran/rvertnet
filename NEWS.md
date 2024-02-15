@@ -1,5 +1,9 @@
-rvertnet 0.8.3
-===============
+# rvertnet 0.8.4
+
+* remove hardcoded figure that caused failed vignette build on 2 CRAN check runners with old pandoc versions
+
+# rvertnet 0.8.3
+
 
 ### MINOR IMPROVEMENTS
 
@@ -19,15 +23,15 @@ rvertnet 0.8.3
 * allow vignette to build
 * fix ggplot2 deprecation warning (#71)
 
-rvertnet 0.8.2
-===============
+# rvertnet 0.8.2
+
 
 ### MINOR IMPROVEMENTS
 
 * vignette fix
 
-rvertnet 0.8.0
-===============
+# rvertnet 0.8.0
+
 
 ### NEW FEATURES
 
@@ -43,16 +47,16 @@ rvertnet 0.8.0
 * `searchbyterm()` fix: booleans need to be converted to VertNet's expected `0/1` instead of `true/false` (#66)
 
 
-rvertnet 0.7.0
-===============
+# rvertnet 0.7.0
+
 
 ### BUG FIXES 
 
 * add month and day params to `searchbyterm` (#64)
 
 
-rvertnet 0.6.2
-===============
+# rvertnet 0.6.2
+
 
 ### BUG FIXES 
 
@@ -61,8 +65,8 @@ was moved - that data source now within the pkg as quite small, and
 now pkg won't break when the file is moved again (#61) (#62)
 
 
-rvertnet 0.6.0
-===============
+# rvertnet 0.6.0
+
 
 Added Code of Conduct.
 
@@ -90,8 +94,8 @@ allows to optionally only return Darwin Core fields
 * Small fix to `vertsummary()` (#59)
 
 
-rvertnet 0.5.0
-===============
+# rvertnet 0.5.0
+
 
 ### NEW FEATURES
 
@@ -106,8 +110,8 @@ available in `searchbyterm()` (#53)
 * Namespace base R pkg fxn calls (`methods`/`stats`/`utils`), and removed 
 some package dependencies that we didn't really need (`plyr`) (#54)
 
-rvertnet 0.4.4
-===============
+# rvertnet 0.4.4
+
 
 ### MINOR IMPROVEMENTS
 
@@ -118,8 +122,8 @@ rvertnet 0.4.4
 
 * Fixed `externalptr` error in the internal `vert_GET()` function (#48)
 
-rvertnet 0.4.1
-===============
+# rvertnet 0.4.1
+
 
 ### BUG FIXES
 
@@ -127,8 +131,8 @@ rvertnet 0.4.1
 internal conversion of logical input to 0/1 needed by the web
 API (#46)
 
-rvertnet 0.4.0
-===============
+# rvertnet 0.4.0
+
 
 ### NEW FEATURES
 
@@ -152,8 +156,8 @@ after obtaining the data (#44)
 was used, lead to error, as that param requires different handling than
 other params. (#45)
 
-rvertnet 0.3.4
-===============
+# rvertnet 0.3.4
+
 
 ### NEW FEATURES
 
@@ -168,8 +172,8 @@ that is, single occurrence ids. (#40)
 
 * Lowercase `occurenceID` to `occurrenceid` to simplify life (#41)
 
-rvertnet 0.3.0
-===============
+# rvertnet 0.3.0
+
 
 ### NEW FEATURES
 
@@ -185,8 +189,8 @@ use cursor so we internally do paging for you for bigger result sets. (#25)
 * Minor vignette updates (#35)
 * Metadata now returned in data requests (#33)
 
-rvertnet 0.2.2
-===============
+# rvertnet 0.2.2
+
 
 Package completely reworked for the new VertNet API.
 
@@ -205,8 +209,7 @@ they print an error message, saying they are defunct.
 * `RJSONIO` replaced with `jsonlite`
 * Changed from CC0 to MIT license
 
-rvertnet 0.0-5
-------------
+# rvertnet 0.0-5
 
 ### NEW FEATURES
 
